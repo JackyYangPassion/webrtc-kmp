@@ -25,10 +25,13 @@ suspend fun makeCall(
     onRemoteVideoTrack: (VideoStreamTrack) -> Unit,
     onRemoteAudioTrack: (AudioStreamTrack) -> Unit = {},
 ): Nothing = coroutineScope {
+    //1. 初始化
     val (pc1, pc2) = peerConnections
     localStream.tracks.forEach { pc1.addTrack(it) }
     val pc1IceCandidates = mutableListOf<IceCandidate>()
     val pc2IceCandidates = mutableListOf<IceCandidate>()
+
+    //2. 处理ICE候选
     pc1.onIceCandidate
         .onEach { Logger.d { "PC1 onIceCandidate: $it" } }
         .onEach {
@@ -49,6 +52,8 @@ suspend fun makeCall(
             }
         }
         .launchIn(this)
+
+    //3. 处理信令状态变化
     pc1.onSignalingStateChange
         .onEach { signalingState ->
             Logger.d { "PC1 onSignalingStateChange: $signalingState" }
@@ -67,6 +72,9 @@ suspend fun makeCall(
             }
         }
         .launchIn(this)
+
+
+    //4. 处理连接状态变化：记录连接状态变化日志。
     pc1.onIceConnectionStateChange
         .onEach { Logger.d { "PC1 onIceConnectionStateChange: $it" } }
         .launchIn(this)
@@ -79,6 +87,8 @@ suspend fun makeCall(
     pc2.onConnectionStateChange
         .onEach { Logger.d { "PC2 onConnectionStateChange: $it" } }
         .launchIn(this)
+
+    //5. 处理轨道事件，监听轨道事件，并根据轨道类型调用相应的回调函数。
     pc1.onTrack
         .onEach { Logger.d { "PC1 onTrack: $it" } }
         .launchIn(this)
@@ -94,6 +104,8 @@ suspend fun makeCall(
             }
         }
         .launchIn(this)
+
+    //6. 创建和交换 SDP
     val offer = pc1.createOffer(OfferAnswerOptions(offerToReceiveVideo = true, offerToReceiveAudio = true))
     pc1.setLocalDescription(offer)
     pc2.setRemoteDescription(offer)

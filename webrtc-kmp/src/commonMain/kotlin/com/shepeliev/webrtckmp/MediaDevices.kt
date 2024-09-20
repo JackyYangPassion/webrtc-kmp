@@ -13,7 +13,7 @@ interface MediaDevices {
             if (video) video()
         }
     }
-
+    // 屏幕共享
     suspend fun getDisplayMedia(): MediaStream
 
     suspend fun supportsDisplayMedia(): Boolean

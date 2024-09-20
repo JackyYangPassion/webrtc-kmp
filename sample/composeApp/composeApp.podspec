@@ -8,7 +8,7 @@ Pod::Spec.new do |spec|
     spec.summary                  = 'Compose app'
     spec.vendored_frameworks      = 'build/cocoapods/framework/ComposeApp.framework'
     spec.libraries                = 'c++'
-    spec.ios.deployment_target    = '13.0'
+    spec.ios.deployment_target    = '17.5'
     spec.dependency 'WebRTC-SDK', '125.6422.04'
                 
     if !Dir.exist?('build/cocoapods/framework/ComposeApp.framework') || Dir.empty?('build/cocoapods/framework/ComposeApp.framework')

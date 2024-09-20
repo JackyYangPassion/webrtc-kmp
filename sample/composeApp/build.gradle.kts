@@ -20,7 +20,7 @@ kotlin {
         version = "1.0"
         summary = "Compose app"
         homepage = "not published"
-        ios.deploymentTarget = "13.0"
+        ios.deploymentTarget = "17.5"
 
         pod("WebRTC-SDK") {
             version = libs.versions.webrtc.ios.sdk.get()

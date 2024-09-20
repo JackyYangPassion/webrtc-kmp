@@ -80,8 +80,12 @@ internal actual class CameraVideoCapturerController actual constructor(
             }
         }
 
-        device = RTCCameraVideoCapturer.captureDevices()
-            .firstOrNull(searchCriteria) as? AVCaptureDevice
+        val captureDevices = RTCCameraVideoCapturer.captureDevices()
+        if (captureDevices.isEmpty()) {
+            throw CameraVideoCapturerException("No capture devices found.")
+        }
+
+        device = captureDevices.firstOrNull(searchCriteria) as? AVCaptureDevice
             ?: throw CameraVideoCapturerException.notFound(constraints)
 
         settings = settings.copy(
