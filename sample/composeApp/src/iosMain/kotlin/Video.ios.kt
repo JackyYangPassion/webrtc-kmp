@@ -5,6 +5,7 @@ import androidx.compose.ui.interop.UIKitView
 import com.shepeliev.webrtckmp.AudioStreamTrack
 import com.shepeliev.webrtckmp.VideoStreamTrack
 import kotlinx.cinterop.ExperimentalForeignApi
+import platform.UIKit.NSLayoutConstraint
 import platform.UIKit.UIViewContentMode
 
 @OptIn(ExperimentalForeignApi::class)
@@ -13,7 +14,7 @@ actual fun Video(videoTrack: VideoStreamTrack, modifier: Modifier, audioTrack: A
     UIKitView(
         factory = {
             RTCMTLVideoView().apply {
-                videoContentMode = UIViewContentMode.UIViewContentModeScaleAspectFit
+                videoContentMode = UIViewContentMode.UIViewContentModeScaleToFill
                 videoTrack.addRenderer(this)
             }
         },

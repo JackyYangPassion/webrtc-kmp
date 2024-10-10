@@ -1,8 +1,15 @@
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -57,17 +64,28 @@ fun App() {
         Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
             val localVideoTrack = localStream?.videoTracks?.firstOrNull()
 
-            localVideoTrack?.let {
-                Video(
-                    videoTrack = it,
-                    modifier = Modifier.weight(1f).fillMaxWidth()
-                )
-            } ?: Box(
-                modifier = Modifier.weight(1f).fillMaxWidth(),
-                contentAlignment = Alignment.Center,
+
+            Box(
+                modifier = Modifier.fillMaxWidth().weight(2f).background(MaterialTheme.colors.onSurface)
             ) {
-                Text("Local video")
+                localVideoTrack?.let {
+                    Video(
+                        videoTrack = it,
+                        modifier = Modifier.fillMaxSize()// 通过查字典，看这个含义
+                    )
+                } ?: Box(
+                    //modifier = Modifier.weight(1f).fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth().aspectRatio(16f / 9f),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Text("Local video")
+                }
             }
+
+            //增加一个分割线
+            Box(
+                modifier = Modifier.fillMaxWidth().height(1.dp).background(MaterialTheme.colors.onSurface)
+            )
 
             remoteVideoTrack?.let {
                 Video(
